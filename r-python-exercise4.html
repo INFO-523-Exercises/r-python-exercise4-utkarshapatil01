@@ -225,7 +225,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>Root mean squared error = 1.0273 </code></pre>
 </div>
 </div>
-<p>The Root mean squared error is a measure of the average deviation of predicted values from true values, and a lower RMSE generally indicates better model performance. In this case, an RMSE of 1.027 suggests that, on average, the model's predictions are approximately 1.027 units away from the true values.</p>
+<p>The Root mean squared error is a measure of the average deviation of predicted values from true values, and a lower RMSE generally indicates better model performance. In this case, an RMSE of 1.027 suggests that, on average, the model’s predictions are approximately 1.027 units away from the true values.</p>
 </section>
 <section id="step-5-postprocessing" class="level4">
 <h4 class="anchored" data-anchor-id="step-5-postprocessing">Step 5: Postprocessing</h4>
@@ -247,7 +247,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>Intercept = 0.9723522 </code></pre>
 </div>
 </div>
-<p>The intercept in a linear regression model represents the predicted value i.e.&nbsp;-2.6 of the dependent variable when all independent variables are set to zero.</p>
+<p>The intercept in a linear regression model represents the predicted value i.e.&nbsp;0.97 of the dependent variable when all independent variables are set to zero.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Step 4: Postprocessing</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -302,6 +302,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="r-python-exercise4_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>Here we can see that ,</p>
+<ol type="1">
+<li><p>X and X2 has strong positive correlation in them.</p></li>
+<li><p>X2 and X3 has strong positive correlation in them.</p></li>
+<li><p>X3 and X4 has strong positive correlation in them.</p></li>
+<li><p>X4 and X5 have a weak negative linear relationship between them, the negative sign indicates a negative correlation.</p></li>
+</ol>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Split data into training and testing sets</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>train_indices <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(numInstances <span class="sc">-</span> numTest)</span>
@@ -340,13 +347,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>regr5_spec <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span> <span class="fu">set_engine</span>(<span class="st">"lm"</span>)</span>
 <span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>regr5_fit <span class="ot">&lt;-</span> regr5_spec <span class="sc">%&gt;%</span> <span class="fu">fit</span>(y <span class="sc">~</span> X1 <span class="sc">+</span> X2 <span class="sc">+</span> X3 <span class="sc">+</span> X4 <span class="sc">+</span> X5, <span class="at">data =</span> train_data5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Here we can see that ,</p>
-<ol type="1">
-<li><p>X and X2 has strong positive correlation in them.</p></li>
-<li><p>X2 and X3 has strong positive correlation in them.</p></li>
-<li><p>X3 and X4 has strong positive correlation in them.</p></li>
-<li><p>X4 and X5 have a weak negative linear relationship between them, the negative sign indicates a negative correlation.</p></li>
-</ol>
 <p>All 4 versions of the regression models are then applied to the training and test sets.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert matrices to data.frames for predictions</span></span>
@@ -434,9 +434,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 # ℹ abbreviated name: ¹​Sum_of_Absolute_Weights</code></pre>
 </div>
 </div>
+<p>We have created different models based on different numbers of attributes. Sum_of_Absolute_Weights indicates the complexity of the model; in this example, model 1 has the lowest Sum_of_Absolute_Weights, indicating the simplest model in terms of feature weights.<br>
+Model 1 also has the lowest test error; later on, as the number of attributes increases, the test error increases, suggesting overfitting of the models.</p>
 </section>
 <section id="ridge-regression" class="level2">
 <h2 class="anchored" data-anchor-id="ridge-regression"><strong>Ridge Regression</strong></h2>
+<p>It is a method used for the tuning of the model, which helps in dealing with the problem of multi collinearity between the independent variables.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to data frame</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">y =</span> y_train, X_train5)</span>
@@ -495,11 +498,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 # ℹ abbreviated name: ¹​Sum_of_Absolute_Weights</code></pre>
 </div>
 </div>
-<p>We can see reduction in test error, this reduction in test error suggests that Ridge Regression has improved the model's ability to generalize to new, unseen data.</p>
+<p>We can see reduction in test error, this reduction in test error suggests that Ridge Regression has improved the model’s ability to generalize to new, unseen data.</p>
 <p>Ridge Regression has effectively reduced the complexity of the model by shrinking some coefficients towards zero.</p>
 </section>
 <section id="lasso-regression" class="level2">
 <h2 class="anchored" data-anchor-id="lasso-regression"><strong>Lasso Regression</strong></h2>
+<p>Lasso regression is&nbsp;a regularization technique that uses shrinkage to shrink data values towards a central point, such as the mean.&nbsp;It is a type of linear regression that combines feature selection and regularization.&nbsp;Lasso regression is also called the Penalized regression method.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the lasso specification</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>lasso_spec <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>(<span class="at">penalty =</span> <span class="fl">0.02</span>, <span class="at">mixture =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
@@ -545,7 +549,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 1 Lasso 1.22083472815552 1.36447668533408 0.750560758224512        </code></pre>
 </div>
 </div>
-<p>Here we can see that Sum of Absolute Weights has reduced to 82.58 only, indicating that Lasso has reduced the complexity of the model by shrinking some coefficients to exactly zero.</p>
+<p>Here we can see that Sum of Absolute Weights has reduced to 0.75 only, indicating that Lasso has reduced the complexity of the model by shrinking some coefficients to exactly zero.</p>
 </section>
 <section id="hyperparameter-selection-via-cross-validation" class="level2">
 <h2 class="anchored" data-anchor-id="hyperparameter-selection-via-cross-validation"><strong>Hyperparameter Selection via Cross-Validation</strong></h2>
@@ -730,6 +734,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 1 LassoCV 1.34525910987747 1.28985807470116 0.750560758224512        </code></pre>
 </div>
 </div>
+<p>Here we can see that Sum of Absolute Weights has reduced to 0.75.</p>
 </section>
 
 </main>

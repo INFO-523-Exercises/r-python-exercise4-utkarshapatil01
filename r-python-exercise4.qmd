@@ -125,7 +125,7 @@ r2_value <- rsq(eval_data, truth = truth, estimate = estimate)
 cat("Root mean squared error =", sprintf("%.4f", rmse_value$.estimate), "\n")
 ```
 
-The Root mean squared error is a measure of the average deviation of predicted values from true values, and a lower RMSE generally indicates better model performance. In this case, an RMSE of 1.027 suggests that, on average, the model\'s predictions are approximately 1.027 units away from the true values.
+The Root mean squared error is a measure of the average deviation of predicted values from true values, and a lower RMSE generally indicates better model performance. In this case, an RMSE of 1.027 suggests that, on average, the model's predictions are approximately 1.027 units away from the true values.
 
 #### Step 5: Postprocessing
 
@@ -144,7 +144,7 @@ Here we have negative slope shows the negative correlation, meaning that as the 
 cat("Intercept =", intercept, "\n")
 ```
 
-The intercept in a linear regression model represents the predicted value i.e. -2.6 of the dependent variable when all independent variables are set to zero.
+The intercept in a linear regression model represents the predicted value i.e. 0.97 of the dependent variable when all independent variables are set to zero.
 
 ```{r}
 ### Step 4: Postprocessing
@@ -195,6 +195,16 @@ plot4 <- ggplot() +
 grid.arrange(plot1, plot2, plot3, plot4, ncol=2)
 ```
 
+Here we can see that ,
+
+1.  X and X2 has strong positive correlation in them.
+
+2.  X2 and X3 has strong positive correlation in them.
+
+3.  X3 and X4 has strong positive correlation in them.
+
+4.  X4 and X5 have a weak negative linear relationship between them, the negative sign indicates a negative correlation.
+
 ```{r}
 # Split data into training and testing sets
 train_indices <- 1:(numInstances - numTest)
@@ -234,16 +244,6 @@ regr4_fit <- regr4_spec %>% fit(y ~ X1 + X2 + X3 + X4, data = train_data4)
 regr5_spec <- linear_reg() %>% set_engine("lm")
 regr5_fit <- regr5_spec %>% fit(y ~ X1 + X2 + X3 + X4 + X5, data = train_data5)
 ```
-
-Here we can see that ,
-
-1.  X and X2 has strong positive correlation in them.
-
-2.  X2 and X3 has strong positive correlation in them.
-
-3.  X3 and X4 has strong positive correlation in them.
-
-4.  X4 and X5 have a weak negative linear relationship between them, the negative sign indicates a negative correlation.
 
 All 4 versions of the regression models are then applied to the training and test sets.
 
@@ -324,7 +324,12 @@ According to above plot, higher test error which suggests that model is not a go
 results
 ```
 
+We have created different models based on different numbers of attributes. Sum_of_Absolute_Weights indicates the complexity of the model; in this example, model 1 has the lowest Sum_of_Absolute_Weights, indicating the simplest model in terms of feature weights.\
+Model 1 also has the lowest test error; later on, as the number of attributes increases, the test error increases, suggesting overfitting of the models.
+
 ## **Ridge Regression**
+
+It is a method used for the tuning of the model, which helps in dealing with the problem of multi collinearity between the independent variables.
 
 ```{r}
 # Convert to data frame
@@ -374,11 +379,13 @@ final_results <- bind_rows(results, values6)
 final_results
 ```
 
-We can see reduction in test error, this reduction in test error suggests that Ridge Regression has improved the model\'s ability to generalize to new, unseen data.
+We can see reduction in test error, this reduction in test error suggests that Ridge Regression has improved the model's ability to generalize to new, unseen data.
 
 Ridge Regression has effectively reduced the complexity of the model by shrinking some coefficients towards zero.
 
 ## **Lasso Regression**
+
+Lasso regression is a regularization technique that uses shrinkage to shrink data values towards a central point, such as the mean. It is a type of linear regression that combines feature selection and regularization. Lasso regression is also called the Penalized regression method.
 
 ```{r}
 # Define the lasso specification
@@ -420,7 +427,7 @@ lasso_results <- tibble(Model = "Lasso",
 lasso_results
 ```
 
-Here we can see that Sum of Absolute Weights has reduced to 82.58 only, indicating that Lasso has reduced the complexity of the model by shrinking some coefficients to exactly zero.
+Here we can see that Sum of Absolute Weights has reduced to 0.75 only, indicating that Lasso has reduced the complexity of the model by shrinking some coefficients to exactly zero.
 
 ## **Hyperparameter Selection via Cross-Validation**
 
@@ -573,3 +580,5 @@ cat("Selected alpha for Lasso =", best_params_lasso$penalty, "\n")
 ```{r}
 lasso_results
 ```
+
+Here we can see that Sum of Absolute Weights has reduced to 0.75.
